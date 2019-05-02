@@ -4,7 +4,9 @@ import org.apache.commons.codec.binary.Hex;
 import org.codehaus.preon.annotation.BoundNumber;
 import org.codehaus.preon.annotation.BoundString;
 import org.codehaus.preon.buffer.ByteOrder;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 
@@ -19,7 +21,10 @@ public class CompleteRunthroughTest {
 
     // Big Endian
     private static final String SAMPLE_HEX = "0036666f6f2c206261722c2062617a000000";
-    // 3600666f6f2c206261722c2062617a000000 little endian
+    //"3600666f6f2c206261722c2062617a000000" ; // little endian
+
+    @Rule
+    public ExpectedException rule = ExpectedException.none();
 
     @Test
     public void testEncode() throws IOException  {
@@ -46,7 +51,9 @@ public class CompleteRunthroughTest {
     }
 
     @Test
-    public void decodeUnderflow() throws Exception {
+    public void testDecodeUnderflowExceptionIncludesFieldAndTypeInformation() throws Exception {
+        rule.expect(DecodingException.class);
+        rule.expectMessage("Error decoding field [someString] in type [TestSubject2]");
         DefaultCodecFactory codecFactory = new DefaultCodecFactory();
         Codec<TestSubject2> codec = codecFactory.create(TestSubject2.class);
 
