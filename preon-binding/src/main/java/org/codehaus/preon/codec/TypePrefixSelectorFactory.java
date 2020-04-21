@@ -144,7 +144,7 @@ public class TypePrefixSelectorFactory implements CodecSelectorFactory {
                 Codec<?> codec = codecs.get(i);
                 if (type.isAssignableFrom(codec.getType())) {
                     // So we found the Codec. Now to make sure that same Codec is picked up again while decoding:
-                    channel.write(size, expressions.get(i).eval(resolver), ByteOrder.BigEndian);
+                    channel.write(size, expressions.get(i).eval(resolver), byteOrder);
                     return codec;
                 }
             }
